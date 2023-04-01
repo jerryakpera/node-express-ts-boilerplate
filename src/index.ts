@@ -1,4 +1,13 @@
-import add from '@src/math/add';
+import { createServer } from '@src/app';
+import config from '@src/config';
 
-console.log('SOLID');
-console.log(add(9, 8));
+const { port } = config;
+
+const startServer = async () => {
+  const app = await createServer();
+  app.listen(port, () => {
+    console.log(`Server live on port: ${port}`);
+  });
+};
+
+startServer();
