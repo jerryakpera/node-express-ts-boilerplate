@@ -29,16 +29,6 @@ const createServer = (): Application => {
 
   app.disable('x-powered-by');
 
-  app.get('/health', async (req: Request, res: Response) => {
-    logger.info('text info', { meta1: 'meta1' });
-    logger.warn('text warn');
-    logger.error('text error');
-    logger.error(new Error('Something went wrong'));
-
-    throw new ValidationError('Some error!', 'age');
-    return res.send('UP');
-  });
-
   app.use(`${baseURL}`, routes);
 
   app.use(notFoundHandler);
@@ -49,6 +39,7 @@ const createServer = (): Application => {
     next(err);
   });
 
+  // Error handler middleware
   app.use(errorHandler);
 
   return app;
