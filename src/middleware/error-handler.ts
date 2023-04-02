@@ -1,14 +1,16 @@
+import CustomError from '@src/errors/CustomError';
 import { Request, Response, NextFunction } from 'express';
-import { CustomError } from '@src/models/custom-error.model';
 
-const errorHandler = (err: TypeError | CustomError, req: Request, res: Response, next: NextFunction) => {
-  let customError = err;
-
-  if (!(err instanceof CustomError)) {
-    customError = new CustomError('Well, this is embarrasing!');
+const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
+  if (err instanceof CustomError) {
+    return res.send({
+      errors: err.serializeErrors(),
+    });
   }
 
-  res.status((customError as CustomError).code).send(customError);
+  res.send({
+    errors: [{ message: 'Some error occured' }],
+  });
 };
 
 export default errorHandler;
